@@ -36,18 +36,14 @@ module reg_a(
     if ( !rst ) rez <= 0;
       else if ( ld_in_bus ) begin
        rez <= in_bus;
-       //sign <= in_bus[7];
      end
       else if(ld_sum) begin
-        //sign <= rez[7];
         rez <= sum;
       end
       else if( left_shift ) begin
-        //sign <= rez[7];
         rez <= rez << 1;
         rez[0] <= lsb;
       end
-      //sign <= rez[7];
     end
 
 endmodule
@@ -92,4 +88,25 @@ module reg_sign(
         rez <= in;
   end
   
+endmodule
+
+module reg_counter(
+  input clk, rst, increment,
+  output reg [2:0] rez,
+  output reg count_is_7
+);
+
+always @ (posedge clk or negedge rst) begin
+  if(!rst) begin
+    rez <= 3'b000;
+    count_is_7 <= 0;
+  end
+  else if(rez == 3'b111) begin
+    rez <= 3'b000;
+    count_is_7 <= 1;
+    end
+  else if(increment)
+    rez <= rez + 1;
+end
+
 endmodule

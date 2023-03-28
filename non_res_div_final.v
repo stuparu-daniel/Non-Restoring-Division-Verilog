@@ -20,6 +20,8 @@ module non_res_div_3_0(
   wire sign_out;
   wire ld_sum;
   wire set_lsb;
+  wire increment;
+  wire cnt7;
   wire finish;
   wire [7:0] out;
   
@@ -32,12 +34,14 @@ module non_res_div_3_0(
   
   reg_m inst3(.clk(clk), .rst(rst), .ld_in_bus(ld_m), .in_bus(in_bus), .rez(m));
   
+  reg_counter inst4(.clk(clk), .rst(rst), .increment(increment), .rez(count), .count_is_7(cnt7));
+  
   parallel_adder_subtractor pa(.operation_type(operation), .sign_in(sign_in), .x(a), .y(m), .result(rez), .sign_out(sign_out));
   
-  control_unit cu(.clk(clk), .rst(rst), .begin_div(begin_div), .sign(sign_in), .ld_a(ld_a), .ld_m(ld_m), .ld_q(ld_q), .ld_sign(ld_sign), .operation(operation), 
-                  .left(left), .set_lsb(set_lsb), .ld_sum(ld_sum), .count(count), .fin(finish));
+  control_unit cu(.clk(clk), .rst(rst), .begin_div(begin_div), .sign(sign_in), .cnt7(cnt7), .ld_a(ld_a), .ld_m(ld_m), .ld_q(ld_q), .ld_sign(ld_sign), .operation(operation), 
+                  .left(left), .set_lsb(set_lsb), .ld_sum(ld_sum), .increment(increment), .fin(finish));
                   
-  reg_out inst4(.clk(clk), .rst(rst), .ld_in_bus(fin), .in1(a), .in2(q), .rez(out));               
+  reg_out inst5(.clk(clk), .rst(rst), .ld_in_bus(fin), .in1(a), .in2(q), .rez(out));               
                   
   assign fin = finish;
   assign out_bus = out;                

@@ -13,7 +13,7 @@
 module control_unit(
   input clk, rst,
   input begin_div,
-  input sign,
+  input sign, cnt7,
   output reg ld_a,
   output reg ld_m,
   output reg ld_q,
@@ -22,7 +22,7 @@ module control_unit(
   output reg left,
   output reg set_lsb,
   output reg ld_sum,
-  output reg [2:0] count,
+  output reg increment,
   output reg fin
 );
 
@@ -42,7 +42,7 @@ initial begin
   ld_sign = 0;
   operation = 0;
   set_lsb = 0;
-  count = 0;
+  increment = 0;
   ld_sum = 0;
   left = 0;
   fin = 0;
@@ -85,6 +85,7 @@ always @(state_reg, begin_div) begin
 	         
 	     `LEFT_SHIFT:
 	           begin
+	               increment = 0;
 	               left = 0;
 	               state_next = `CHECK_SIGN;
 	           end
@@ -108,7 +109,7 @@ always @(state_reg, begin_div) begin
 	               operation = 0;
 	               ld_sum = 0;
 	               ld_sign = 0;
-	               if(count == 3'b111) begin
+	               if(cnt7) begin
 	                 set_lsb = 1;
 	                 state_next = `END;
 	                 end
@@ -137,7 +138,7 @@ always @(state_reg, begin_div) begin
 	          `CHECK_COUNT:
 	             begin
 	               set_lsb = 0;
-	               if(count == 3'b111)
+	               if(cnt7)
 	                 begin
 	                   if(sign) begin
 	                     ld_sum = 1;
@@ -150,7 +151,7 @@ always @(state_reg, begin_div) begin
 	               else begin
 	                 state_next = `LEFT_SHIFT;
 	                 left = 1;
-	                 count = count + 1;
+	                 increment = 1;
 	               end
 	             end 
 	      
@@ -159,7 +160,7 @@ always @(state_reg, begin_div) begin
 	                 set_lsb = 0;
 	                 ld_sum = 0;
 	                 fin = 1;
-	                 count = 0;
+	                 increment = 0;
 	                 state_next = `IDLE;
 	             end
   endcase
