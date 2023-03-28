@@ -1,4 +1,3 @@
-
 module FAC(
   input x, y, c_in,
   output z, c_out
@@ -18,7 +17,7 @@ module parallel_adder_subtractor(
   output sign_out
 );
 
-  wire [8:0] carries;
+  wire [9:0] carries;
   wire [8:0] sum;
   
   reg [8:0] x_ext;

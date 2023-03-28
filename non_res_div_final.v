@@ -10,11 +10,8 @@ module non_res_div_3_0(
   wire [7:0] q;
   wire [7:0] m;
   wire [7:0] rez;
-  wire [8:0] o_c;
   wire [2:0] count;
-  //wire sign;
   wire left;
-  //wire ld_in_bus;
   wire ld_a;
   wire ld_q;
   wire ld_m;

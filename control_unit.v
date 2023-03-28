@@ -71,7 +71,6 @@ always @(state_reg, begin_div) begin
 	               
 	    `LD_Q:
 	         begin
-	             //ld_a = 0;
 	             ld_q = 0;
 	             state_next = `LD_M;
 	             ld_m = 1;
@@ -79,7 +78,6 @@ always @(state_reg, begin_div) begin
 	         
 	    `LD_M:
 	         begin
-	             //ld_q = 0;
 	             ld_m = 0;
 	             left = 1;
 	             state_next = `LEFT_SHIFT;
@@ -88,14 +86,11 @@ always @(state_reg, begin_div) begin
 	     `LEFT_SHIFT:
 	           begin
 	               left = 0;
-	               //ld_m = 0;
-	               //count = count + 1;
 	               state_next = `CHECK_SIGN;
 	           end
 	      
 	      `CHECK_SIGN:
 	         begin
-	           //left = 0;
 	           ld_sum = 1;
 	           ld_sign = 1;
 	           if(sign) begin
@@ -113,16 +108,11 @@ always @(state_reg, begin_div) begin
 	               operation = 0;
 	               ld_sum = 0;
 	               ld_sign = 0;
-	               //enable_adder = 1;
-	               //a = rez;
-	               //a1 = a;
 	               if(count == 3'b111) begin
-	                 //ld_sum = 1;
 	                 set_lsb = 1;
 	                 state_next = `END;
 	                 end
 	               else begin
-	                 //left = 1;
 	                 set_lsb = 1;
 	                 state_next = `SET_LSB_Q;
 	                 end
@@ -133,28 +123,19 @@ always @(state_reg, begin_div) begin
 	               operation = 1;
 	               ld_sum = 0;
 	               ld_sign = 0;
-	               //enable_adder = 1;
-	               //a = rez;
-	               //a1 = a;
-	               //left = 1;
 	               set_lsb = 1;
 	               state_next = `SET_LSB_Q;
 	           end
 	           
 	          `SET_LSB_Q:
 	            begin
-	                //enable_adder = 0;
-	                //sign = a[7];
-	                //q[0] = ~sign;
 	                ld_sum = 0;
 	                set_lsb = 0;
                   state_next = `CHECK_COUNT;
-                  //q1 = q;
 	            end
 	           
 	          `CHECK_COUNT:
 	             begin
-	               //left = 0;
 	               set_lsb = 0;
 	               if(count == 3'b111)
 	                 begin
@@ -178,11 +159,7 @@ always @(state_reg, begin_div) begin
 	                 set_lsb = 0;
 	                 ld_sum = 0;
 	                 fin = 1;
-	                 //out_bus = a;
-	                 //#100
-	                 //out_bus = q;
 	                 count = 0;
-	                 //begin_div = 0;
 	                 state_next = `IDLE;
 	             end
   endcase
