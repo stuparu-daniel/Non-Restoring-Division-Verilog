@@ -23,6 +23,7 @@ module non_res_div_3_0(
   wire increment;
   wire cnt7;
   wire finish;
+  wire operation;
   wire [7:0] out;
   
   
